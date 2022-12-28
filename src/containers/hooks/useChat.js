@@ -5,7 +5,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import {
     CHATBOX_QUERY, CREATE_CHATBOX_MUTATION,
     MESSAGE_SUBSCRIPTION, CREATE_MESSAGE_MUTATION
-} from "../../graphql" ;
+} from "../../graphql";
 
 
 // var client = new WebSocket('ws://localhost:4000');
@@ -24,15 +24,15 @@ const ChatProvider = (props) => {
     const LOCALSTORAGE_KEY = "save-me";
     const savedMe = localStorage.getItem(LOCALSTORAGE_KEY)
     const [status, setStatus] = useState({});
-    const [me, setMe] = useState(savedMe|| "");
-    const [friend, setFriend] = useState('you'||'')
+    const [me, setMe] = useState(savedMe || "");
+    const [friend, setFriend] = useState('')
     const [signedIn, setSignedIn] = useState(false);
     const [messages, setMessages] = useState([]);
     const [chatBoxes, setChatBoxes] = useState([]);
     const clearMessages = (payload) => {
         sendData(["clear", payload]);
     };
-    
+
     const [msgSent, setMsgSent] = useState(false);
     const sendChat = (payload) => {
         sendData(["chat", payload]);
@@ -61,7 +61,7 @@ const ChatProvider = (props) => {
         }
     }
     // define states
-    
+
     const [startChat] = useMutation(CREATE_CHATBOX_MUTATION);
     const [sendMessage] = useMutation(CREATE_MESSAGE_MUTATION);
     const { loading, error, data, subscribeToMore }
@@ -71,8 +71,8 @@ const ChatProvider = (props) => {
                 name2: friend,
             },
         });
-    
-   
+
+
 
 
     useEffect(() => {
@@ -107,8 +107,8 @@ const ChatProvider = (props) => {
         } catch (e) {
             console.log(e);
         }
-        
-    }, [subscribeToMore,loading]);
+
+    }, [subscribeToMore, loading]);
     useEffect(() => {
         if (data) {
             console.log("data:", data)
@@ -118,7 +118,7 @@ const ChatProvider = (props) => {
     // if (loading) return <p>Loading...</p>;
     if (error) {
         // eslint-disable-next-line no-console
-        console.error("收不到資料",error);
+        console.error("收不到資料", error);
         // return (<p>Error :(</p>);
     }
     // useEffect(() => {

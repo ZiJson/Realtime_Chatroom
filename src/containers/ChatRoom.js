@@ -171,6 +171,7 @@ function ChatRoom() {
                                 name2: name
                             },
                         });
+                        
                     }
                     catch (e) {
                         console.log(e)
@@ -203,6 +204,10 @@ function ChatRoom() {
                             to: ${friend},
                             body: ${msg}
                         },`)
+                        displayStatus({
+                            type: 'success',
+                            msg: 'Message sent.'
+                        });
                         await sendMessage({
                             variables: {
                                 sender: me,
@@ -210,6 +215,8 @@ function ChatRoom() {
                                 body: msg
                             },
                         });
+                        
+                        
                     }
                     catch (e) {
                         console.log("sendmessage 有問題:",e)
