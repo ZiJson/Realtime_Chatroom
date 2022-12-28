@@ -204,16 +204,16 @@ function ChatRoom() {
                             to: ${friend},
                             body: ${msg}
                         },`)
-                        displayStatus({
-                            type: 'success',
-                            msg: 'Message sent.'
-                        });
                         await sendMessage({
                             variables: {
                                 sender: me,
                                 to: friend,
                                 body: msg
                             },
+                        });
+                        displayStatus({
+                            type: 'success',
+                            msg: 'Message sent.'
                         });
                         
                         
