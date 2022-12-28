@@ -12,21 +12,31 @@ import { GraphQLWsLink } from
   '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 import { ChatProvider } from
-  "./containers/hooks/useChat"
-import App from "./containers/App";
-import reportWebVitals from "./reportWebVitals"
-
+  "./containers/hooks/useChat.js"
+import App from "./containers/App.js";
+import reportWebVitals from "./reportWebVitals.js"
+import { WebSocketLink } from "apollo-link-ws";
 const url = new URL("/graphql", window.location.href);
 
 const httpLink = new HttpLink({
   uri: url.href
 });
-const wsLink = new GraphQLWsLink(createClient({
-  url: url.href.replace("http", "ws"),
-  options: {
+// const wsLink = new GraphQLWsLink(createClient({
+//   url: url.href.replace("http", "ws"),
+//   options: {
+//     lazy: true,
+//   },
+  
+//   options: { reconnect: true },
+// }))
+const wsLink = new WebSocketLink({
+  // uri: `ws://localhost:5000/graphql`,
+  uri: url.href.replace("http", "ws"),
+  options: { 
+    reconnect: true,
     lazy: true,
-  },
-}))
+   },
+});
 
 const splitLink = split(
   ({ query }) => {
@@ -42,7 +52,7 @@ const splitLink = split(
 
 const client = new ApolloClient({
   link: splitLink,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache().restore({}),
 });
 const root =
   ReactDOM.createRoot(document.getElementById("root")

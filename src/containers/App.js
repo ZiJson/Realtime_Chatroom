@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import {useChat} from "./hooks/useChat";
+import {useChat} from "./hooks/useChat.js";
 import { useEffect } from 'react';
-import ChatRoom from './ChatRoom';
-import SignIn from './SignIn';
+import ChatRoom from './ChatRoom.js';
+import SignIn from './SignIn.js';
 
 const Wrapper = styled.div`
 display: flex;

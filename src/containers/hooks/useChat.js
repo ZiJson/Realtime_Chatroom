@@ -5,7 +5,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import {
     CHATBOX_QUERY, CREATE_CHATBOX_MUTATION,
     MESSAGE_SUBSCRIPTION, CREATE_MESSAGE_MUTATION
-} from "../../graphql";
+} from "../../graphql" ;
 
 
 // var client = new WebSocket('ws://localhost:4000');
@@ -17,6 +17,7 @@ const ChatContext = createContext({
     messages: [],
     sendMessage: () => { },
     clearMessages: () => { },
+    startChat: () => { },
 });
 
 const ChatProvider = (props) => {
@@ -31,7 +32,8 @@ const ChatProvider = (props) => {
     const clearMessages = (payload) => {
         sendData(["clear", payload]);
     };
-
+    
+    const [msgSent, setMsgSent] = useState(false);
     const sendChat = (payload) => {
         sendData(["chat", payload]);
         // setMessages([...messages, payload]);
@@ -69,11 +71,12 @@ const ChatProvider = (props) => {
                 name2: friend,
             },
         });
-
+    
    
 
 
     useEffect(() => {
+        console.log("接收")
         try {
             console.log("收到publish:", me, friend)
             subscribeToMore({
@@ -105,7 +108,7 @@ const ChatProvider = (props) => {
             console.log(e);
         }
         
-    }, [subscribeToMore, friend]);
+    }, [subscribeToMore,loading]);
     useEffect(() => {
         if (data) {
             console.log("data:", data)
@@ -152,7 +155,7 @@ const ChatProvider = (props) => {
         <ChatContext.Provider
             value={{
                 status, me, friend, setFriend, signedIn, messages, setStatus, setMe, setSignedIn, setMessages,
-                sendMessage, clearMessages, displayStatus, sendChat, startChat, chatBoxes, setChatBoxes, data
+                sendMessage, clearMessages, displayStatus, sendChat, startChat, chatBoxes, setChatBoxes, data, msgSent, setMsgSent
             }}
             {...props}
         />

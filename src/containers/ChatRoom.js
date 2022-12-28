@@ -13,7 +13,6 @@ background: #eeeeee52;
 border-radius: 10px;
 margin:  20px auto;
 padding: 20px;
-overflow: auto;
 `
 const FootRef = styled.div`
 height: 10px;
@@ -22,12 +21,11 @@ height: 10px;
 
 
 function ChatRoom() {
-    const { status, messages, setMessages, sendMessage, clearMessages, displayStatus, me, sendChat, friend, setFriend, startChat, chatBoxes, setChatBoxes, data } = useChat()
+    const { status, messages, setMessages, sendMessage, clearMessages, displayStatus, me, sendChat, friend, setFriend, startChat, chatBoxes, setChatBoxes, data, msgSent, setMsgSent } = useChat()
     const [username, setUsername] = useState(me)
     const [body, setBody] = useState('')
     const bodyRef = useRef(null)
-    const msgFooter = useRef(null)
-    const [msgSent, setMsgSent] = useState(false); // { label, children, key }
+    const msgFooter = useRef(null) // { label, children, key }
     const [activeKey, setActiveKey] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     // const displayStatus = (s) => {
@@ -59,6 +57,7 @@ function ChatRoom() {
         setMsgSent(true);
         console.log("更新messages", messages)
         rerenderChatBox(activeKey)
+        scrollToBottom();
     }, [messages]);
     const scrollToBottom = () => {
         msgFooter.current?.scrollIntoView
@@ -72,16 +71,29 @@ function ChatRoom() {
             </>
         ) : (
             chat.map(({ sender: name, body }, i) => {
-                return <Message isMe={name === me ? true : false} message={body}></Message>
+                return i!==chat.length-1?
+                    <Message isMe={name === me ? true : false} message={body}></Message>:
+                    <>
+                        <Message isMe={name === me ? true : false} message={body}></Message>
+                        <FootRef id='foot' ref={msgFooter} />
+                    </>
+
+
+            
             }
             )
         )); // 產生 chat 的 DOM nodes
     const extractChat = (friend) => {
-        return renderChat
-            (messages.filter
-                (({ sender, body }) => ((sender === friend) || (sender === me))));
+        let cchat = renderChat
+        (messages.filter
+            (({ sender, body }) => ((sender === friend) || (sender === me))));
+        
+        
+        return cchat
 
     };
+    const foot = () => (
+            <FootRef id='foot' ref={msgFooter} />)
     const rerenderChatBox = (activeKey) => {
         if (activeKey) {
             const index = chatBoxes.findIndex
@@ -144,7 +156,6 @@ function ChatRoom() {
 
             >
 
-                <FootRef id='foot' ref={msgFooter} />
             </ChatBoxesWrapper >
 
             <ChatModal
@@ -201,9 +212,8 @@ function ChatRoom() {
                         });
                     }
                     catch (e) {
-                        console.log(e)
+                        console.log("sendmessage 有問題:",e)
                     }
-                    sendMessage({ name: username, to: friend, body: msg })
                     console.log(chatBoxes)
                     setBody('')
                 }}

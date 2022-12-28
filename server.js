@@ -28,10 +28,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const port = process.env.PORT || 80;
 
 const typeDefs = importSchema("./backend/src/schema.graphql");
-const pubsub = new PubSub();
+const pubsub = createPubSub();
 const app = express();
 
-mongo.connect();
 app.use(cors());
 // app.use("/api", apiRoute);
 app.use(bodyParser.json());
@@ -41,10 +40,7 @@ app.use(express.static(path.join(__dirname, "build")));
 // });
 
 const server = new ApolloServer({
-  typeDefs: fs.readFileSync(
-    './backend/src/schema.graphql',
-    'utf-8'
-  ),
+  typeDefs,
   resolvers: {
     Query,
     Mutation,
@@ -84,6 +80,7 @@ const httpServer = http.createServer(app);
 server.installSubscriptionHandlers(httpServer);
 
 
+mongo.connect();
 // const wsServer = new WebSocketServer({
 //   server: httpServer,
 //   path: yoga.graphqlEndpoint,
