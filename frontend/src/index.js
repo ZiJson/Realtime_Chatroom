@@ -20,7 +20,7 @@ const httpLink = new HttpLink({
   uri: 'https://zijason.site/node'
 });
 const wsLink = new GraphQLWsLink(createClient({
-  url: 'wss://zijason.site/node',
+  url: 'wss://zijason.site:443',
   options: {
     lazy: true,
   },
