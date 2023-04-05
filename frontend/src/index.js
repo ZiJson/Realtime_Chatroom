@@ -17,10 +17,10 @@ import App from "./containers/App";
 import reportWebVitals from "./reportWebVitals"
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/'
+  uri: 'https://zijason.site/node'
 });
 const wsLink = new GraphQLWsLink(createClient({
-  url: 'ws://localhost:4000/',
+  url: 'wss://zijason.site/node',
   options: {
     lazy: true,
   },
