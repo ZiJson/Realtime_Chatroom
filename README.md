@@ -6,4 +6,3 @@
 2. 在 hw6 下 ```yarn install``` 會自動安裝所有frontend, backend的套件
 3. 在 hw6 下兩台終端機分別 ```yarn server```, ```yarn start```
 
-# 你很棒，期末加油
